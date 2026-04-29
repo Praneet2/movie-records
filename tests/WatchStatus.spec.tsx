@@ -2,30 +2,21 @@ import { render, screen } from "@testing-library/react";
 import { WatchStatus } from "../src/components/WatchStatus";
 
 describe("WatchStatus component", () => {
-    const seenWatchStatus = {
-        seen: false,
-        liked: false,
-        when: null,
-    };
-    it("Renders the watch status", () => {
-        render(<WatchStatus watched={seenWatchStatus}></WatchStatus>);
+    test("shows not watched text when the movie is not seen", () => {
+        render(
+            <WatchStatus watched={{ seen: false, liked: false, when: null }} />,
+        );
+
+        expect(screen.getByText(/Not yet watched/i)).toBeInTheDocument();
     });
-    it("Renders the watch status", () => {
-        render(<WatchStatus watched={seenWatchStatus}></WatchStatus>);
-        const watchedText = screen.getByText(/Watched/i);
-        expect(watchedText).toBeInTheDocument();
-    });
-    it("Renders the watch status", () => {
+
+    test("shows watched text when the movie is seen", () => {
         render(
             <WatchStatus
-                watched={{
-                    seen: false,
-                    liked: false,
-                    when: null,
-                }}
-            ></WatchStatus>,
+                watched={{ seen: true, liked: false, when: "2025-01-01" }}
+            />,
         );
-        const watchedText = screen.getByText(/Not yet watched/i);
-        expect(watchedText).toBeInTheDocument();
+
+        expect(screen.getByText(/Watched/i)).toBeInTheDocument();
     });
 });
